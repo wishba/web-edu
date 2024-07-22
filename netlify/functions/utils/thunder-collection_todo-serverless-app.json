@@ -1,0 +1,85 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "web-edu",
+    "dateExported": "2024-02-21T07:14:34.656Z",
+    "version": "1.1",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "69b253c2-67b8-4e0b-b286-f8081743d26f",
+            "colId": "9912f2ee-121f-47ee-869f-1bacb1151668",
+            "containerId": "",
+            "name": "read",
+            "url": "http://localhost:8888/.netlify/functions/todosRead",
+            "method": "GET",
+            "sortNum": 20000,
+            "created": "2024-02-20T06:36:43.017Z",
+            "modified": "2024-02-21T03:54:03.031Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"userId\": \"1118e2e7-54ac-48b9-9c16-01ac950f253b\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "d5b9de68-b7b5-4df2-abcd-9445823dcae1",
+            "colId": "9912f2ee-121f-47ee-869f-1bacb1151668",
+            "containerId": "",
+            "name": "create",
+            "url": "http://localhost:8888/.netlify/functions/todosCreate",
+            "method": "POST",
+            "sortNum": 30000,
+            "created": "2024-02-20T06:43:38.875Z",
+            "modified": "2024-02-21T07:14:30.676Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"userId\": \"1118e2e7-54ac-48b9-9c16-01ac950f253b\",\n  \"todo\": \"do some testing\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "a10a39e4-ff12-4afb-80a9-49f9fbdf598b",
+            "colId": "9912f2ee-121f-47ee-869f-1bacb1151668",
+            "containerId": "",
+            "name": "update",
+            "url": "http://localhost:8888/.netlify/functions/todosUpdate",
+            "method": "PUT",
+            "sortNum": 40000,
+            "created": "2024-02-20T06:54:29.698Z",
+            "modified": "2024-02-21T07:13:42.923Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"todoId\": \"390315385257198160\",\n  \"todo\": \"do some testing\",\n  \"finished\": true\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "6d40a22e-e599-4e4e-a579-ee86ce67d146",
+            "colId": "9912f2ee-121f-47ee-869f-1bacb1151668",
+            "containerId": "",
+            "name": "delete",
+            "url": "http://localhost:8888/.netlify/functions/todosDelete",
+            "method": "DELETE",
+            "sortNum": 50000,
+            "created": "2024-02-20T06:57:22.680Z",
+            "modified": "2024-02-21T07:14:20.544Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"todoId\": \"390322764339216977\"\n}",
+                "form": []
+            },
+            "tests": []
+        }
+    ]
+}
