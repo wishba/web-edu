@@ -7,6 +7,8 @@ function App() {
   const [userName, setUserName] = useState()
   const [allTodo, setAllTodo] = useState()
   const [isLoadingTodo, setIsLoadingTodo] = useState(false)
+  const [timeline, setTimeline] = useState()
+  const [isLoadingTimeline, setIsLoadingTimeline] = useState(false)
   const [createTodoField, setCreateTodoField] = useState('')
   const [updateId, setUpdateId] = useState()
   const [updateTodoField, setUpdateTodoField] = useState('')
@@ -39,7 +41,28 @@ function App() {
     }
   }
 
+  const fetchTimeline = async () => {
+    setIsLoadingTimeline(true)
+
+    try {
+      const response = await fetch('/.netlify/functions/todosReadAll', {
+        method: 'POST'
+      })
+
+      const data = await response.json()
+      setTimeline(data.data)
+
+    } catch (error) {
+      console.error(error);
+
+    } finally {
+      setIsLoadingTimeline(false)
+    }
+  }
+
   useEffect(() => {
+    fetchTimeline()
+
     if (netlifyIdentity.currentUser() != null) {
       setUserId(netlifyIdentity.currentUser().id);
       setUserName(netlifyIdentity.currentUser().user_metadata.full_name)
@@ -65,6 +88,8 @@ function App() {
     setPage('timeline')
     setTimelineOutline('')
     setProfileOutline('outline')
+
+    fetchTimeline()
   }
 
   const handleOpenProfile = () => {
@@ -198,6 +223,18 @@ function App() {
     </tbody>
   </table>
 
+  const timelineContent = <table>
+    <tbody>
+      {timeline?.map(todo => (
+        <tr key={todo.ref['@ref'].id}>
+          <td>
+            <p>{todo.data.todo}</p>
+          </td>
+        </tr>
+      )).slice().reverse()}
+    </tbody>
+  </table>
+
   return (
     <div className='container'>
       <br />
@@ -229,7 +266,12 @@ function App() {
 
       {page == 'timeline' ?
         (
-          <p>timeline</p>
+          <>
+            {isLoadingTimeline ?
+              (<p>Loading...</p>) :
+              (<>{timelineContent}</>)
+            }
+          </>
 
         ) : null
       }

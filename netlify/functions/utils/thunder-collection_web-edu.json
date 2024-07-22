@@ -1,20 +1,21 @@
 {
-    "client": "Thunder Client",
+    "clientName": "Thunder Client",
     "collectionName": "web-edu",
-    "dateExported": "2024-02-21T07:14:34.656Z",
-    "version": "1.1",
+    "collectionId": "752bf35e-0c4c-4882-ac54-25b5dc5942fa",
+    "dateExported": "2024-07-22T10:00:52.220Z",
+    "version": "1.2",
     "folders": [],
     "requests": [
         {
-            "_id": "69b253c2-67b8-4e0b-b286-f8081743d26f",
-            "colId": "9912f2ee-121f-47ee-869f-1bacb1151668",
+            "_id": "e1496f9a-c31c-4faa-b7eb-7462cb471264",
+            "colId": "752bf35e-0c4c-4882-ac54-25b5dc5942fa",
             "containerId": "",
             "name": "read",
             "url": "http://localhost:8888/.netlify/functions/todosRead",
             "method": "GET",
             "sortNum": 20000,
-            "created": "2024-02-20T06:36:43.017Z",
-            "modified": "2024-02-21T03:54:03.031Z",
+            "created": "2024-07-22T09:59:42.205Z",
+            "modified": "2024-07-22T09:59:42.205Z",
             "headers": [],
             "params": [],
             "body": {
@@ -25,15 +26,15 @@
             "tests": []
         },
         {
-            "_id": "d5b9de68-b7b5-4df2-abcd-9445823dcae1",
-            "colId": "9912f2ee-121f-47ee-869f-1bacb1151668",
+            "_id": "6aecfb85-9380-4e36-8ab4-8a63ecbeb2f7",
+            "colId": "752bf35e-0c4c-4882-ac54-25b5dc5942fa",
             "containerId": "",
             "name": "create",
             "url": "http://localhost:8888/.netlify/functions/todosCreate",
             "method": "POST",
             "sortNum": 30000,
-            "created": "2024-02-20T06:43:38.875Z",
-            "modified": "2024-02-21T07:14:30.676Z",
+            "created": "2024-07-22T09:59:42.206Z",
+            "modified": "2024-07-22T09:59:42.206Z",
             "headers": [],
             "params": [],
             "body": {
@@ -44,42 +45,55 @@
             "tests": []
         },
         {
-            "_id": "a10a39e4-ff12-4afb-80a9-49f9fbdf598b",
-            "colId": "9912f2ee-121f-47ee-869f-1bacb1151668",
+            "_id": "21d8f6de-32ad-49a0-bde7-d3c0dd1ab41c",
+            "colId": "752bf35e-0c4c-4882-ac54-25b5dc5942fa",
+            "containerId": "",
+            "name": "read all",
+            "url": "http://localhost:8888/.netlify/functions/todosReadAll",
+            "method": "GET",
+            "sortNum": 30000,
+            "created": "2024-07-22T09:59:42.207Z",
+            "modified": "2024-07-22T09:59:42.207Z",
+            "headers": []
+        },
+        {
+            "_id": "5c8691a9-015d-412c-ad12-befc77b8acf5",
+            "colId": "752bf35e-0c4c-4882-ac54-25b5dc5942fa",
             "containerId": "",
             "name": "update",
             "url": "http://localhost:8888/.netlify/functions/todosUpdate",
             "method": "PUT",
             "sortNum": 40000,
-            "created": "2024-02-20T06:54:29.698Z",
-            "modified": "2024-02-21T07:13:42.923Z",
+            "created": "2024-07-22T09:59:42.208Z",
+            "modified": "2024-07-22T09:59:42.208Z",
             "headers": [],
             "params": [],
             "body": {
                 "type": "json",
-                "raw": "{\n  \"todoId\": \"390315385257198160\",\n  \"todo\": \"do some testing\",\n  \"finished\": true\n}",
+                "raw": "{\n  \"todoId\": \"390324311966089808\",\n  \"todo\": \"do some testing\",\n  \"finished\": true\n}",
                 "form": []
             },
             "tests": []
         },
         {
-            "_id": "6d40a22e-e599-4e4e-a579-ee86ce67d146",
-            "colId": "9912f2ee-121f-47ee-869f-1bacb1151668",
+            "_id": "81e83f4c-8fc6-40f4-bbdf-5bea3ea29d5a",
+            "colId": "752bf35e-0c4c-4882-ac54-25b5dc5942fa",
             "containerId": "",
             "name": "delete",
             "url": "http://localhost:8888/.netlify/functions/todosDelete",
             "method": "DELETE",
             "sortNum": 50000,
-            "created": "2024-02-20T06:57:22.680Z",
-            "modified": "2024-02-21T07:14:20.544Z",
+            "created": "2024-07-22T09:59:42.209Z",
+            "modified": "2024-07-22T09:59:42.209Z",
             "headers": [],
             "params": [],
             "body": {
                 "type": "json",
-                "raw": "{\n  \"todoId\": \"390322764339216977\"\n}",
+                "raw": "{\n  \"todoId\": \"390324311966089808\"\n}",
                 "form": []
             },
             "tests": []
         }
-    ]
+    ],
+    "ref": "cHGKCUe3GLPJ5Zkj7HIC-q0vUfRW3-OFvoZVnxny_BKa6InH1KRjG2xNlVcrYJABPl478JJErMETDdK2iq-CXA"
 }
