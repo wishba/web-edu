@@ -139,7 +139,7 @@ function App() {
           backgroundImage: 'linear-gradient(90deg, #d92662, #2060df)',
           backgroundClip: 'text',
           color: 'transparent'
-        }}>To-do list app</h1>
+        }}>Forum Edukasi</h1>
 
         <button onClick={() => netlifyIdentity.open()}>
           {userName ? 'Logout' : 'Login / Signup'}
@@ -151,13 +151,12 @@ function App() {
         (
           <>
             <form onSubmit={e => handleCreate(e)}>
-              <fieldset role='group'>
-                <input type="text"
-                  value={createTodoField}
-                  onChange={e => setCreateTodoField(e.target.value)}
-                />
-                <input type="submit" value="Create" />
-              </fieldset>
+              <textarea
+                style={{ height: "50vh" }}
+                value={createTodoField}
+                onChange={e => setCreateTodoField(e.target.value)}
+              />
+              <input type="submit" value="Post" />
             </form>
 
             <dialog ref={updateRef}>
@@ -169,17 +168,11 @@ function App() {
                 </header>
 
                 <form onSubmit={e => handleUpdate(e)}>
-                  <input type="text"
+                  <textarea
+                    style={{ height: "70vh" }}
                     value={updateTodoField}
                     onChange={e => setUpdateTodoField(e.target.value)}
                   />
-                  <label>
-                    <span>Finished </span>
-                    <input type="checkbox"
-                      checked={updateFinishedField}
-                      onChange={() => setUpdateFinishedField(!updateFinishedField)}
-                    />
-                  </label>
                   <input type="submit" value="Update" />
                 </form>
               </article>
@@ -189,7 +182,7 @@ function App() {
           <>
             <br />
             <br />
-            <h2 style={{ textAlign: 'center' }}>Hello! Please login to see your to-do</h2>
+            <h2 style={{ textAlign: 'center' }}>Hello! Please login to see your post</h2>
           </>
         )
       }
@@ -204,8 +197,7 @@ function App() {
               {allTodo?.map(todo => (
                 <tr key={todo.ref['@ref'].id}>
                   <td>
-                    <p>Todo: {todo.data.todo}</p>
-                    <p>Finished: {JSON.stringify(todo.data.finished)}</p>
+                    <p>{todo.data.todo}</p>
                   </td>
 
                   <td style={{
