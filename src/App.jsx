@@ -202,38 +202,44 @@ function App() {
     </dialog>
   </>
 
-  const postContent = <table>
-    <tbody>
-      {allTodo?.map(todo => (
-        <tr key={todo.ref['@ref'].id}>
-          <td>
-            <p>{todo.data.todo}</p>
-          </td>
+  const postContent = <>
+    {allTodo?.map(todo => (
+      <div key={todo.ref['@ref'].id}>
+        <p>{todo.data.todo}</p>
 
-          <td style={{
-            textAlign: 'right',
-            paddingTop: '0',
-            paddingBottom: '1rem'
-          }}>
-            <button onClick={() => handleUpdateInfo(todo)}>Update</button>
-            <button onClick={() => handleDelete(todo)}>Delete</button>
-          </td>
-        </tr>
-      )).slice().reverse()}
-    </tbody>
-  </table>
+        <div style={{
+          textAlign: 'right',
+          paddingTop: '0',
+          paddingBottom: '1rem'
+        }}>
+          <button onClick={() => handleUpdateInfo(todo)}>Update</button>
+          <button onClick={() => handleDelete(todo)}>Delete</button>
+        </div>
 
-  const timelineContent = <table>
-    <tbody>
-      {timeline?.map(todo => (
-        <tr key={todo.ref['@ref'].id}>
-          <td>
-            <p>{todo.data.todo}</p>
-          </td>
-        </tr>
-      )).slice().reverse()}
-    </tbody>
-  </table>
+        <hr />
+
+      </div>
+    )).slice().reverse()}
+  </>
+
+  const timelineContent = <>
+    {timeline?.map(todo => (
+      <div key={todo.ref['@ref'].id}>
+        <p>{todo.data.todo}</p>
+
+        <div style={{
+          textAlign: 'right',
+          paddingTop: '0',
+          paddingBottom: '1rem'
+        }}>
+          <button>reply</button>
+        </div>
+
+        <hr />
+
+      </div>
+    )).slice().reverse()}
+  </>
 
   return (
     <div className='container'>
@@ -256,11 +262,13 @@ function App() {
         style={{ width: '50%' }}
         onClick={handleOpenTimeline}
       >Timeline</button>
+
       <button
         className={profileOutline}
         style={{ width: '50%' }}
         onClick={handleOpenProfile}
       >Profile</button>
+
       <br />
       <br />
 
