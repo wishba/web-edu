@@ -6,14 +6,22 @@ const adminClient = new faunadb.Client({
   secret: process.env.FAUNADB_SECRET
 })
 
-export async function handler() {
+export async function handler(event) {
+  const { userId, userName, title, content } = JSON.parse(event.body)
+
   try {
     const results = await adminClient.query(
-      q.Map(
-        q.Paginate(
-          q.Match(q.Index('todo-all'))
-        ),
-        (todoRef) => q.Get(todoRef)
+      q.Create(
+        q.Collection('posts'),
+        {
+          data: {
+            userId,
+            userName,
+            title,
+            content,
+            "approval": false
+          }
+        },
       )
     )
 

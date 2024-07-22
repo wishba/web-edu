@@ -13,9 +13,9 @@ export async function handler(event) {
     const results = await adminClient.query(
       q.Map(
         q.Paginate(
-          q.Match(q.Index('todo-by-userId'), userId)
+          q.Match(q.Index('post-by-userId'), userId)
         ),
-        (todoRef) => q.Get(todoRef)
+        (postRef) => q.Get(postRef)
       )
     )
 

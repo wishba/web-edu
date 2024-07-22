@@ -5,25 +5,26 @@ import { useEffect, useRef, useState } from 'react';
 function App() {
   const [userId, setUserId] = useState()
   const [userName, setUserName] = useState()
-  const [allTodo, setAllTodo] = useState()
-  const [isLoadingTodo, setIsLoadingTodo] = useState(false)
+  const [post, setPost] = useState()
+  const [isLoadingPost, setIsLoadingPost] = useState(false)
   const [timeline, setTimeline] = useState()
   const [isLoadingTimeline, setIsLoadingTimeline] = useState(false)
-  const [createTodoField, setCreateTodoField] = useState('')
+  const [createTitleField, setCreateTitleField] = useState('')
+  const [createContentField, setCreateContentField] = useState('')
   const [updateId, setUpdateId] = useState()
-  const [updateTodoField, setUpdateTodoField] = useState('')
-  const [updateFinishedField, setUpdateFinishedField] = useState(false)
+  const [updateTitleField, setUpdateTitleField] = useState('')
+  const [updateContentField, setUpdateContentField] = useState('')
   const [page, setPage] = useState('timeline')
   const [timelineOutline, setTimelineOutline] = useState('')
   const [profileOutline, setProfileOutline] = useState('outline')
 
   const updateRef = useRef()
 
-  const fetchTodo = async () => {
-    setIsLoadingTodo(true)
+  const fetchPost = async () => {
+    setIsLoadingPost(true)
 
     try {
-      const response = await fetch('/.netlify/functions/todosRead', {
+      const response = await fetch('/.netlify/functions/postRead', {
         method: 'POST',
         body: JSON.stringify({
           userId: netlifyIdentity.currentUser().id
@@ -31,13 +32,13 @@ function App() {
       })
 
       const data = await response.json()
-      setAllTodo(data.data)
+      setPost(data.data)
 
     } catch (error) {
       console.error(error);
 
     } finally {
-      setIsLoadingTodo(false)
+      setIsLoadingPost(false)
     }
   }
 
@@ -45,7 +46,7 @@ function App() {
     setIsLoadingTimeline(true)
 
     try {
-      const response = await fetch('/.netlify/functions/todosReadAll', {
+      const response = await fetch('/.netlify/functions/postReadAll', {
         method: 'POST'
       })
 
@@ -66,20 +67,20 @@ function App() {
     if (netlifyIdentity.currentUser() != null) {
       setUserId(netlifyIdentity.currentUser().id);
       setUserName(netlifyIdentity.currentUser().user_metadata.full_name)
-      fetchTodo()
+      fetchPost()
     }
 
     netlifyIdentity.on('login', user => {
       setUserId(netlifyIdentity.currentUser().id);
       setUserName(user.user_metadata.full_name)
-      fetchTodo()
+      fetchPost()
       netlifyIdentity.close()
     })
 
     netlifyIdentity.on('logout', () => {
       setUserId(null)
       setUserName(null)
-      setAllTodo(null)
+      setPost(null)
       netlifyIdentity.close()
     })
   }, [])
@@ -102,32 +103,35 @@ function App() {
     e.preventDefault()
 
     try {
-      await fetch('.netlify/functions/todosCreate', {
+      await fetch('.netlify/functions/postCreate', {
         method: 'POST',
         body: JSON.stringify({
           userId,
-          todo: createTodoField
+          userName,
+          title: createTitleField,
+          content: createContentField
         })
       })
 
-      fetchTodo()
-      setCreateTodoField('')
+      fetchPost()
+      setCreateTitleField('')
+      setCreateContentField('')
 
     } catch (error) {
       console.error(error);
     }
   }
 
-  const handleDelete = async todo => {
+  const handleDelete = async posts => {
     try {
-      await fetch('.netlify/functions/todosDelete', {
+      await fetch('.netlify/functions/postDelete', {
         method: 'DELETE',
         body: JSON.stringify({
-          todoId: todo.ref['@ref'].id
+          postId: posts.ref['@ref'].id
         })
       })
 
-      fetchTodo()
+      fetchPost()
 
     } catch (error) {
       console.error(error);
@@ -138,16 +142,16 @@ function App() {
     e.preventDefault()
 
     try {
-      await fetch('.netlify/functions/todosUpdate', {
+      await fetch('.netlify/functions/postUpdate', {
         method: 'PUT',
         body: JSON.stringify({
-          todoId: updateId,
-          todo: updateTodoField,
-          finished: updateFinishedField
+          postId: updateId,
+          title: updateTitleField,
+          content: updateContentField
         })
       })
 
-      fetchTodo()
+      fetchPost()
       handleUpdateModalClose()
 
     } catch (error) {
@@ -155,10 +159,10 @@ function App() {
     }
   }
 
-  const handleUpdateInfo = todo => {
-    setUpdateId(todo.ref['@ref'].id)
-    setUpdateTodoField(todo.data.todo)
-    setUpdateFinishedField(todo.data.finished)
+  const handleUpdateInfo = posts => {
+    setUpdateId(posts.ref['@ref'].id)
+    setUpdateTitleField(posts.data.title)
+    setUpdateContentField(posts.data.content)
 
     handleUpdateModalOpen()
   }
@@ -168,16 +172,19 @@ function App() {
   }
 
   const handleUpdateModalClose = () => {
-    console.log('close');
     updateRef.current.close()
   }
 
   const postForm = <>
     <form onSubmit={e => handleCreate(e)}>
+      <input type="text"
+        value={createTitleField}
+        onChange={e => setCreateTitleField(e.target.value)}
+      />
       <textarea
-        style={{ height: "50vh" }}
-        value={createTodoField}
-        onChange={e => setCreateTodoField(e.target.value)}
+        style={{ height: "30vh" }}
+        value={createContentField}
+        onChange={e => setCreateContentField(e.target.value)}
       />
       <input type="submit" value="Post" />
     </form>
@@ -191,10 +198,14 @@ function App() {
         </header>
 
         <form onSubmit={e => handleUpdate(e)}>
+          <input type="text"
+            value={updateTitleField}
+            onChange={e => setUpdateTitleField(e.target.value)}
+          />
           <textarea
-            style={{ height: "70vh" }}
-            value={updateTodoField}
-            onChange={e => setUpdateTodoField(e.target.value)}
+            style={{ height: "50vh" }}
+            value={updateContentField}
+            onChange={e => setUpdateContentField(e.target.value)}
           />
           <input type="submit" value="Update" />
         </form>
@@ -203,17 +214,18 @@ function App() {
   </>
 
   const postContent = <>
-    {allTodo?.map(todo => (
-      <div key={todo.ref['@ref'].id}>
-        <p>{todo.data.todo}</p>
+    {post?.map(posts => (
+      <div key={posts.ref['@ref'].id}>
+        <p style={{ fontWeight: 'bold' }}>{posts.data.title}</p>
+        <p>{posts.data.content}</p>
 
         <div style={{
           textAlign: 'right',
           paddingTop: '0',
           paddingBottom: '1rem'
         }}>
-          <button onClick={() => handleUpdateInfo(todo)}>Update</button>
-          <button onClick={() => handleDelete(todo)}>Delete</button>
+          <button onClick={() => handleUpdateInfo(posts)}>Update</button>
+          <button onClick={() => handleDelete(posts)}>Delete</button>
         </div>
 
         <hr />
@@ -223,9 +235,11 @@ function App() {
   </>
 
   const timelineContent = <>
-    {timeline?.map(todo => (
-      <div key={todo.ref['@ref'].id}>
-        <p>{todo.data.todo}</p>
+    {timeline?.map(posts => (
+      <div key={posts.ref['@ref'].id}>
+        <p>&#9786; {posts.data.userName}</p>
+        <p style={{ fontWeight: 'bold' }}>{posts.data.title}</p>
+        <p>{posts.data.content}</p>
 
         <div style={{
           textAlign: 'right',
@@ -284,20 +298,24 @@ function App() {
         ) : null
       }
 
-      {page == 'profile' ? (
-        <>
-          {netlifyIdentity.currentUser() ?
-            (<>{postForm}</>) :
-            (<h2 style={{ textAlign: 'center' }}>Please login to see your post</h2>)
-          }
+      {page == 'profile' ?
+        (
+          <>
+            {netlifyIdentity.currentUser() ?
+              (<>{postForm}</>) :
+              (<p style={{
+                fontWeight: 'bold',
+                textAlign: 'center'
+              }}>Please login to see your post</p>)
+            }
 
-          {isLoadingTodo ?
-            (<p>Loading...</p>) :
-            (<>{postContent}</>)
-          }
-        </>
+            {isLoadingPost ?
+              (<p>Loading...</p>) :
+              (<>{postContent}</>)
+            }
+          </>
 
-      ) : null
+        ) : null
       }
 
     </div>

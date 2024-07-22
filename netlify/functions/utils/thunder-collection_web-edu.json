@@ -2,98 +2,90 @@
     "clientName": "Thunder Client",
     "collectionName": "web-edu",
     "collectionId": "752bf35e-0c4c-4882-ac54-25b5dc5942fa",
-    "dateExported": "2024-07-22T10:00:52.220Z",
+    "dateExported": "2024-07-22T23:34:50.661Z",
     "version": "1.2",
     "folders": [],
     "requests": [
         {
-            "_id": "e1496f9a-c31c-4faa-b7eb-7462cb471264",
+            "_id": "0a7beb9d-c604-437b-a936-acdf672e0a71",
             "colId": "752bf35e-0c4c-4882-ac54-25b5dc5942fa",
             "containerId": "",
-            "name": "read",
-            "url": "http://localhost:8888/.netlify/functions/todosRead",
+            "name": "read post",
+            "url": "http://localhost:8888/.netlify/functions/postRead",
             "method": "GET",
-            "sortNum": 20000,
-            "created": "2024-07-22T09:59:42.205Z",
-            "modified": "2024-07-22T09:59:42.205Z",
+            "sortNum": 25000,
+            "created": "2024-07-22T14:50:24.727Z",
+            "modified": "2024-07-22T14:52:08.681Z",
             "headers": [],
-            "params": [],
             "body": {
                 "type": "json",
-                "raw": "{\n  \"userId\": \"1118e2e7-54ac-48b9-9c16-01ac950f253b\"\n}",
+                "raw": "{\n  \"userId\": \"1\"\n}",
                 "form": []
-            },
-            "tests": []
+            }
         },
         {
-            "_id": "6aecfb85-9380-4e36-8ab4-8a63ecbeb2f7",
+            "_id": "bfdb426e-f389-4737-9c4b-b117ce8cd1e0",
             "colId": "752bf35e-0c4c-4882-ac54-25b5dc5942fa",
             "containerId": "",
-            "name": "create",
-            "url": "http://localhost:8888/.netlify/functions/todosCreate",
-            "method": "POST",
-            "sortNum": 30000,
-            "created": "2024-07-22T09:59:42.206Z",
-            "modified": "2024-07-22T09:59:42.206Z",
-            "headers": [],
-            "params": [],
-            "body": {
-                "type": "json",
-                "raw": "{\n  \"userId\": \"1118e2e7-54ac-48b9-9c16-01ac950f253b\",\n  \"todo\": \"do some testing\"\n}",
-                "form": []
-            },
-            "tests": []
-        },
-        {
-            "_id": "21d8f6de-32ad-49a0-bde7-d3c0dd1ab41c",
-            "colId": "752bf35e-0c4c-4882-ac54-25b5dc5942fa",
-            "containerId": "",
-            "name": "read all",
-            "url": "http://localhost:8888/.netlify/functions/todosReadAll",
+            "name": "read all post",
+            "url": "http://localhost:8888/.netlify/functions/postReadAll",
             "method": "GET",
-            "sortNum": 30000,
-            "created": "2024-07-22T09:59:42.207Z",
-            "modified": "2024-07-22T09:59:42.207Z",
+            "sortNum": 35000,
+            "created": "2024-07-22T14:53:13.605Z",
+            "modified": "2024-07-22T14:53:43.997Z",
             "headers": []
         },
         {
-            "_id": "5c8691a9-015d-412c-ad12-befc77b8acf5",
+            "_id": "38396cb1-e625-43f8-b356-fed17d389f94",
             "colId": "752bf35e-0c4c-4882-ac54-25b5dc5942fa",
             "containerId": "",
-            "name": "update",
-            "url": "http://localhost:8888/.netlify/functions/todosUpdate",
-            "method": "PUT",
+            "name": "create post",
+            "url": "http://localhost:8888/.netlify/functions/postCreate",
+            "method": "POST",
             "sortNum": 40000,
-            "created": "2024-07-22T09:59:42.208Z",
-            "modified": "2024-07-22T09:59:42.208Z",
+            "created": "2024-07-22T14:37:39.477Z",
+            "modified": "2024-07-22T22:17:40.629Z",
             "headers": [],
-            "params": [],
             "body": {
                 "type": "json",
-                "raw": "{\n  \"todoId\": \"390324311966089808\",\n  \"todo\": \"do some testing\",\n  \"finished\": true\n}",
+                "raw": "{\n  \"userId\": \"1\",\n  \"userName\": \"budi\",\n  \"title\": \"React is Easy to Grasp\",\n  \"content\": \"One of the top benefits of React is how easy it is to grasp, particularly if you already are a pro at JavaScript. You can install React and be up and running in a few hours, getting straight to work building web applications. The documentation is clear and there is a lot of it. Furthermore, the short learning curve means you can waste less time learning and more time doing. It is almost certainly why React has had such widespread adoption.\"\n}",
                 "form": []
-            },
-            "tests": []
+            }
         },
         {
-            "_id": "81e83f4c-8fc6-40f4-bbdf-5bea3ea29d5a",
+            "_id": "53ffa4d6-eabd-4b43-afc3-18a862f11c1e",
             "colId": "752bf35e-0c4c-4882-ac54-25b5dc5942fa",
             "containerId": "",
-            "name": "delete",
-            "url": "http://localhost:8888/.netlify/functions/todosDelete",
-            "method": "DELETE",
-            "sortNum": 50000,
-            "created": "2024-07-22T09:59:42.209Z",
-            "modified": "2024-07-22T09:59:42.209Z",
+            "name": "update post",
+            "url": "http://localhost:8888/.netlify/functions/postUpdate",
+            "method": "PUT",
+            "sortNum": 45000,
+            "created": "2024-07-22T14:56:21.500Z",
+            "modified": "2024-07-22T15:01:04.855Z",
             "headers": [],
-            "params": [],
             "body": {
                 "type": "json",
-                "raw": "{\n  \"todoId\": \"390324311966089808\"\n}",
+                "raw": "{\n  \"postId\": \"404121813174452810\",\n  \"title\": \"is php still relevant in 2024?\",\n  \"content\": \"Although many consider PHP an old and subpar language, it remains the most used language across all websites in 2024.\"\n}",
                 "form": []
-            },
-            "tests": []
+            }
+        },
+        {
+            "_id": "32065aab-439c-4dba-80c0-a6b712846405",
+            "colId": "752bf35e-0c4c-4882-ac54-25b5dc5942fa",
+            "containerId": "",
+            "name": "delete post",
+            "url": "http://localhost:8888/.netlify/functions/postDelete",
+            "method": "DELETE",
+            "sortNum": 60000,
+            "created": "2024-07-22T15:02:07.003Z",
+            "modified": "2024-07-22T15:02:57.038Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"postId\": \"404121813174452810\"\n}",
+                "form": []
+            }
         }
     ],
-    "ref": "cHGKCUe3GLPJ5Zkj7HIC-q0vUfRW3-OFvoZVnxny_BKa6InH1KRjG2xNlVcrYJABPl478JJErMETDdK2iq-CXA"
+    "ref": "cHGKCUe3GLPJ5Zkj7HIC-uT5KIcPl8VgfEYUWYpxx82KC4eNbYBCcheWJEr0D6K_2hCaWeDuflT1ShfKgSm3Uw"
 }

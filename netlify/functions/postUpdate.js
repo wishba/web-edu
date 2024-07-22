@@ -7,16 +7,16 @@ const adminClient = new faunadb.Client({
 })
 
 export async function handler(event) {
-  const { todoId, todo, finished } = JSON.parse(event.body)
+  const { postId, title, content } = JSON.parse(event.body)
 
   try {
     const results = await adminClient.query(
       q.Update(
-        q.Ref(q.Collection('todo'), todoId),
+        q.Ref(q.Collection('posts'), postId),
         {
           data: {
-            todo,
-            finished
+            title,
+            content
           }
         },
       )

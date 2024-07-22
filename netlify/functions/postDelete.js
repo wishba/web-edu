@@ -7,12 +7,12 @@ const adminClient = new faunadb.Client({
 })
 
 export async function handler(event) {
-  const { todoId } = JSON.parse(event.body)
+  const { postId } = JSON.parse(event.body)
 
   try {
     const results = await adminClient.query(
       q.Delete(
-        q.Ref(q.Collection('todo'), todoId)
+        q.Ref(q.Collection('posts'), postId)
       )
     )
 
