@@ -5,16 +5,19 @@ import { useEffect, useRef, useState } from 'react';
 function App() {
   const [userId, setUserId] = useState()
   const [userName, setUserName] = useState()
+
   const [post, setPost] = useState()
   const [isLoadingPost, setIsLoadingPost] = useState(false)
   const [timeline, setTimeline] = useState()
   const [isLoadingTimeline, setIsLoadingTimeline] = useState(false)
+
   const [createTitleField, setCreateTitleField] = useState('')
   const [createContentField, setCreateContentField] = useState('')
   const [updateId, setUpdateId] = useState()
   const [updateTitleField, setUpdateTitleField] = useState('')
   const [updateContentField, setUpdateContentField] = useState('')
-  const [page, setPage] = useState('timeline')
+
+  const [outline, setOutline] = useState('timeline')
   const [timelineOutline, setTimelineOutline] = useState('')
   const [profileOutline, setProfileOutline] = useState('outline')
 
@@ -86,7 +89,7 @@ function App() {
   }, [])
 
   const handleOpenTimeline = () => {
-    setPage('timeline')
+    setOutline('timeline')
     setTimelineOutline('')
     setProfileOutline('outline')
 
@@ -94,7 +97,7 @@ function App() {
   }
 
   const handleOpenProfile = () => {
-    setPage('profile')
+    setOutline('profile')
     setTimelineOutline('outline')
     setProfileOutline('')
   }
@@ -288,7 +291,7 @@ function App() {
       <br />
       <br />
 
-      {page == 'timeline' ?
+      {outline == 'timeline' ?
         (
           <>
             {isLoadingTimeline ?
@@ -300,7 +303,7 @@ function App() {
         ) : null
       }
 
-      {page == 'profile' ?
+      {outline == 'profile' ?
         (
           <>
             {netlifyIdentity.currentUser() ?
