@@ -6,8 +6,8 @@ function App() {
   const [userId, setUserId] = useState()
   const [userName, setUserName] = useState()
 
-  const [post, setPost] = useState()
-  const [isLoadingPost, setIsLoadingPost] = useState(false)
+  const [profile, setProfile] = useState()
+  const [isLoadingProfile, setIsLoadingProfile] = useState(false)
   const [timeline, setTimeline] = useState()
   const [isLoadingTimeline, setIsLoadingTimeline] = useState(false)
   const [reply, setReply] = useState()
@@ -28,28 +28,6 @@ function App() {
   const updateRef = useRef()
   const replyRef = useRef()
   const replyButtonRef = useRef()
-
-  const fetchPost = async () => {
-    setIsLoadingPost(true)
-
-    try {
-      const response = await fetch('/.netlify/functions/postRead', {
-        method: 'POST',
-        body: JSON.stringify({
-          userId: netlifyIdentity.currentUser().id
-        })
-      })
-
-      const data = await response.json()
-      setPost(data.data)
-
-    } catch (error) {
-      console.error(error);
-
-    } finally {
-      setIsLoadingPost(false)
-    }
-  }
 
   const fetchTimeline = async () => {
     setIsLoadingTimeline(true)
@@ -94,26 +72,48 @@ function App() {
     }
   }
 
+  const fetchProfile = async () => {
+    setIsLoadingProfile(true)
+
+    try {
+      const response = await fetch('/.netlify/functions/postRead', {
+        method: 'POST',
+        body: JSON.stringify({
+          userId: netlifyIdentity.currentUser().id
+        })
+      })
+
+      const data = await response.json()
+      setProfile(data.data)
+
+    } catch (error) {
+      console.error(error);
+
+    } finally {
+      setIsLoadingProfile(false)
+    }
+  }
+
   useEffect(() => {
     fetchTimeline()
 
     if (netlifyIdentity.currentUser() != null) {
       setUserId(netlifyIdentity.currentUser().id);
       setUserName(netlifyIdentity.currentUser().user_metadata.full_name)
-      fetchPost()
+      fetchProfile()
     }
 
     netlifyIdentity.on('login', user => {
       setUserId(netlifyIdentity.currentUser().id);
       setUserName(user.user_metadata.full_name)
-      fetchPost()
+      fetchProfile()
       netlifyIdentity.close()
     })
 
     netlifyIdentity.on('logout', () => {
       setUserId(null)
       setUserName(null)
-      setPost(null)
+      setProfile(null)
       netlifyIdentity.close()
     })
   }, [])
@@ -130,6 +130,8 @@ function App() {
     setOutline('profile')
     setTimelineOutline('outline')
     setProfileOutline('')
+
+    fetchProfile()
   }
 
   const handleCreate = async e => {
@@ -146,7 +148,7 @@ function App() {
         })
       })
 
-      fetchPost()
+      fetchProfile()
       setCreateTitleField('')
       setCreateContentField('')
 
@@ -168,7 +170,7 @@ function App() {
         })
       })
 
-      fetchPost()
+      fetchProfile()
       handleUpdateModalClose()
 
     } catch (error) {
@@ -201,7 +203,7 @@ function App() {
         })
       })
 
-      fetchPost()
+      fetchProfile()
 
     } catch (error) {
       console.error(error);
@@ -215,6 +217,7 @@ function App() {
       await fetch('.netlify/functions/postCreate', {
         method: 'POST',
         body: JSON.stringify({
+          userId,
           userName,
           replyTo: replyId,
           content: replyContentField
@@ -262,7 +265,7 @@ function App() {
     )).slice().reverse()}
   </>
 
-  const postForm = <>
+  const profileForm = <>
     <p>Silakan buat posting di sini; posting Anda akan muncul di Timeline setelah disetujui oleh admin.</p>
 
     <form onSubmit={e => handleCreate(e)}>
@@ -279,8 +282,8 @@ function App() {
     </form>
   </>
 
-  const postContent = <>
-    {post?.map(posts => (
+  const profileContent = <>
+    {profile?.map(posts => (
       <div key={posts.ref['@ref'].id}>
         <p style={{ fontWeight: 'bold' }}>{posts.data.title}</p>
         <p>{posts.data.content}</p>
@@ -347,16 +350,16 @@ function App() {
         (
           <>
             {netlifyIdentity.currentUser() ?
-              (<>{postForm}</>) :
+              (<>{profileForm}</>) :
               (<p style={{
                 fontWeight: 'bold',
                 textAlign: 'center'
               }}>Please login to see your post</p>)
             }
 
-            {isLoadingPost ?
+            {isLoadingProfile ?
               (<p>Loading...</p>) :
-              (<>{postContent}</>)
+              (<>{profileContent}</>)
             }
           </>
 
