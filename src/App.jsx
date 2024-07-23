@@ -19,6 +19,7 @@ function App() {
   const [updateTitleField, setUpdateTitleField] = useState('')
   const [updateContentField, setUpdateContentField] = useState('')
   const [replyId, setReplyId] = useState()
+  const [replyContentField, setReplyContentField] = useState('')
 
   const [outline, setOutline] = useState('timeline')
   const [timelineOutline, setTimelineOutline] = useState('')
@@ -69,6 +70,7 @@ function App() {
   }
 
   const fetchReply = async (posts) => {
+    setReplyId(posts.ref['@ref'].id)
     replyRef.current.showModal()
     setIsLoadingReply(true)
 
@@ -205,6 +207,27 @@ function App() {
     }
   }
 
+  const handleReply = async e => {
+    e.preventDefault()
+
+    try {
+      await fetch('.netlify/functions/postCreate', {
+        method: 'POST',
+        body: JSON.stringify({
+          userName,
+          replyTo: replyId,
+          content: replyContentField
+        })
+      })
+
+      setReplyContentField('')
+      replyRef.current.close()
+
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   const timelineContent = <>
     {timeline?.map(posts => (
       <div key={posts.ref['@ref'].id}>
@@ -230,7 +253,6 @@ function App() {
     {reply?.map(posts => (
       <div key={posts.ref['@ref'].id}>
         <p>&#9786; {posts.data.userName}</p>
-        <p style={{ fontWeight: 'bold' }}>{posts.data.title}</p>
         <p>{posts.data.content}</p>
 
         {/* <div style={{
@@ -383,7 +405,20 @@ function App() {
 
           {isLoadingReply ?
             (<p>Loading...</p>) :
-            (<>{timelineReply}</>)
+            (<>
+              <div style={{
+                height: '30vw',
+                overflow: 'auto'
+              }}>{timelineReply}</div>
+
+              <form onSubmit={e => handleReply(e)}>
+                <textarea
+                  value={replyContentField}
+                  onChange={e => setReplyContentField(e.target.value)}
+                />
+                <input type="submit" value="Reply" />
+              </form>
+            </>)
           }
 
           {/* <form onSubmit={e => handleUpdate(e)}>
@@ -398,6 +433,7 @@ function App() {
             />
             <input type="submit" value="Update" />
           </form> */}
+
         </article>
       </dialog>
 
