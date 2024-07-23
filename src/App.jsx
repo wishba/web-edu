@@ -10,6 +10,8 @@ function App() {
   const [isLoadingPost, setIsLoadingPost] = useState(false)
   const [timeline, setTimeline] = useState()
   const [isLoadingTimeline, setIsLoadingTimeline] = useState(false)
+  const [reply, setReply] = useState()
+  const [isLoadingReply, setIsLoadingReply] = useState(false)
 
   const [createTitleField, setCreateTitleField] = useState('')
   const [createContentField, setCreateContentField] = useState('')
@@ -63,6 +65,29 @@ function App() {
 
     } finally {
       setIsLoadingTimeline(false)
+    }
+  }
+
+  const fetchReply = async (posts) => {
+    replyRef.current.showModal()
+    setIsLoadingReply(true)
+
+    try {
+      const response = await fetch('/.netlify/functions/postReadReply', {
+        method: 'POST',
+        body: JSON.stringify({
+          replyTo: posts.ref['@ref'].id
+        })
+      })
+
+      const data = await response.json()
+      setReply(data.data)
+
+    } catch (error) {
+      console.error(error);
+
+    } finally {
+      setIsLoadingReply(false)
     }
   }
 
@@ -164,22 +189,6 @@ function App() {
     updateRef.current.close()
   }
 
-  const handleReplyInfo = posts => {
-    setReplyId(posts.ref['@ref'].id)
-    // setUpdateTitleField(posts.data.title)
-    // setUpdateContentField(posts.data.content)
-
-    handleReplyModalOpen()
-  }
-
-  const handleReplyModalOpen = () => {
-    replyRef.current.showModal()
-  }
-
-  const handleReplyModalClose = () => {
-    replyRef.current.close()
-  }
-
   const handleDelete = async posts => {
     try {
       await fetch('.netlify/functions/postDelete', {
@@ -208,8 +217,29 @@ function App() {
           paddingTop: '0',
           paddingBottom: '1rem'
         }}>
-          <button onClick={() => handleReplyInfo(posts)}>Reply</button>
+          <button onClick={() => fetchReply(posts)}>Reply</button>
         </div>
+
+        <hr />
+
+      </div>
+    )).slice().reverse()}
+  </>
+
+  const timelineReply = <>
+    {reply?.map(posts => (
+      <div key={posts.ref['@ref'].id}>
+        <p>&#9786; {posts.data.userName}</p>
+        <p style={{ fontWeight: 'bold' }}>{posts.data.title}</p>
+        <p>{posts.data.content}</p>
+
+        {/* <div style={{
+        textAlign: 'right',
+        paddingTop: '0',
+        paddingBottom: '1rem'
+      }}>
+        <button onClick={() => handleReplyInfo(posts)}>Reply</button>
+      </div> */}
 
         <hr />
 
@@ -345,11 +375,16 @@ function App() {
         <article>
           <header style={{ textAlign: 'right' }}>
             <button
-              onClick={() => handleReplyModalClose()}
+              onClick={() => replyRef.current.close()}
             >Close</button>
           </header>
 
           <p>{replyId}</p>
+
+          {isLoadingReply ?
+            (<p>Loading...</p>) :
+            (<>{timelineReply}</>)
+          }
 
           {/* <form onSubmit={e => handleUpdate(e)}>
             <input type="text"
