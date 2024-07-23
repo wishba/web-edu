@@ -125,22 +125,6 @@ function App() {
     }
   }
 
-  const handleDelete = async posts => {
-    try {
-      await fetch('.netlify/functions/postDelete', {
-        method: 'DELETE',
-        body: JSON.stringify({
-          postId: posts.ref['@ref'].id
-        })
-      })
-
-      fetchPost()
-
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
   const handleUpdate = async e => {
     e.preventDefault()
 
@@ -178,6 +162,43 @@ function App() {
     updateRef.current.close()
   }
 
+  const handleDelete = async posts => {
+    try {
+      await fetch('.netlify/functions/postDelete', {
+        method: 'DELETE',
+        body: JSON.stringify({
+          postId: posts.ref['@ref'].id
+        })
+      })
+
+      fetchPost()
+
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  const timelineContent = <>
+    {timeline?.map(posts => (
+      <div key={posts.ref['@ref'].id}>
+        <p>&#9786; {posts.data.userName}</p>
+        <p style={{ fontWeight: 'bold' }}>{posts.data.title}</p>
+        <p>{posts.data.content}</p>
+
+        <div style={{
+          textAlign: 'right',
+          paddingTop: '0',
+          paddingBottom: '1rem'
+        }}>
+          <button>reply</button>
+        </div>
+
+        <hr />
+
+      </div>
+    )).slice().reverse()}
+  </>
+
   const postForm = <>
     <p>Silakan buat posting di sini; posting Anda akan muncul di Timeline setelah disetujui oleh admin.</p>
 
@@ -193,29 +214,6 @@ function App() {
       />
       <input type="submit" value="Post" />
     </form>
-
-    <dialog ref={updateRef}>
-      <article>
-        <header>
-          <button aria-label="Close" rel="prev"
-            onClick={() => handleUpdateModalClose()}
-          ></button>
-        </header>
-
-        <form onSubmit={e => handleUpdate(e)}>
-          <input type="text"
-            value={updateTitleField}
-            onChange={e => setUpdateTitleField(e.target.value)}
-          />
-          <textarea
-            style={{ height: "50vh" }}
-            value={updateContentField}
-            onChange={e => setUpdateContentField(e.target.value)}
-          />
-          <input type="submit" value="Update" />
-        </form>
-      </article>
-    </dialog>
   </>
 
   const postContent = <>
@@ -231,27 +229,6 @@ function App() {
         }}>
           <button onClick={() => handleUpdateInfo(posts)}>Update</button>
           <button onClick={() => handleDelete(posts)}>Delete</button>
-        </div>
-
-        <hr />
-
-      </div>
-    )).slice().reverse()}
-  </>
-
-  const timelineContent = <>
-    {timeline?.map(posts => (
-      <div key={posts.ref['@ref'].id}>
-        <p>&#9786; {posts.data.userName}</p>
-        <p style={{ fontWeight: 'bold' }}>{posts.data.title}</p>
-        <p>{posts.data.content}</p>
-
-        <div style={{
-          textAlign: 'right',
-          paddingTop: '0',
-          paddingBottom: '1rem'
-        }}>
-          <button>reply</button>
         </div>
 
         <hr />
@@ -322,6 +299,29 @@ function App() {
 
         ) : null
       }
+
+      <dialog ref={updateRef}>
+        <article>
+          <header>
+            <button aria-label="Close" rel="prev"
+              onClick={() => handleUpdateModalClose()}
+            ></button>
+          </header>
+
+          <form onSubmit={e => handleUpdate(e)}>
+            <input type="text"
+              value={updateTitleField}
+              onChange={e => setUpdateTitleField(e.target.value)}
+            />
+            <textarea
+              style={{ height: "50vh" }}
+              value={updateContentField}
+              onChange={e => setUpdateContentField(e.target.value)}
+            />
+            <input type="submit" value="Update" />
+          </form>
+        </article>
+      </dialog>
 
     </div>
   )
