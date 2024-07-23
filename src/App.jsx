@@ -46,7 +46,7 @@ function App() {
     setIsLoadingTimeline(true)
 
     try {
-      const response = await fetch('/.netlify/functions/postReadAll', {
+      const response = await fetch('/.netlify/functions/postReadApproved', {
         method: 'POST'
       })
 
