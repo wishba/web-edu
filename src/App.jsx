@@ -27,6 +27,7 @@ function App() {
 
   const updateRef = useRef()
   const replyRef = useRef()
+  const replyButtonRef = useRef()
 
   const fetchPost = async () => {
     setIsLoadingPost(true)
@@ -221,7 +222,7 @@ function App() {
       })
 
       setReplyContentField('')
-      replyRef.current.close()
+      replyButtonRef.current.click()
 
     } catch (error) {
       console.error(error);
@@ -240,7 +241,7 @@ function App() {
           paddingTop: '0',
           paddingBottom: '1rem'
         }}>
-          <button onClick={() => fetchReply(posts)}>Reply</button>
+          <button ref={replyButtonRef} onClick={() => fetchReply(posts)}>Reply</button>
         </div>
 
         <hr />
@@ -254,14 +255,6 @@ function App() {
       <div key={posts.ref['@ref'].id}>
         <p>&#9786; {posts.data.userName}</p>
         <p>{posts.data.content}</p>
-
-        {/* <div style={{
-        textAlign: 'right',
-        paddingTop: '0',
-        paddingBottom: '1rem'
-      }}>
-        <button onClick={() => handleReplyInfo(posts)}>Reply</button>
-      </div> */}
 
         <hr />
 
@@ -401,8 +394,6 @@ function App() {
             >Close</button>
           </header>
 
-          <p>{replyId}</p>
-
           {isLoadingReply ?
             (<p>Loading...</p>) :
             (<>
@@ -412,6 +403,8 @@ function App() {
               }}>{timelineReply}</div>
 
               <form onSubmit={e => handleReply(e)}>
+                <hr />
+
                 <textarea
                   value={replyContentField}
                   onChange={e => setReplyContentField(e.target.value)}
@@ -420,19 +413,6 @@ function App() {
               </form>
             </>)
           }
-
-          {/* <form onSubmit={e => handleUpdate(e)}>
-            <input type="text"
-              value={updateTitleField}
-              onChange={e => setUpdateTitleField(e.target.value)}
-            />
-            <textarea
-              style={{ height: "50vh" }}
-              value={updateContentField}
-              onChange={e => setUpdateContentField(e.target.value)}
-            />
-            <input type="submit" value="Update" />
-          </form> */}
 
         </article>
       </dialog>
