@@ -16,12 +16,14 @@ function App() {
   const [updateId, setUpdateId] = useState()
   const [updateTitleField, setUpdateTitleField] = useState('')
   const [updateContentField, setUpdateContentField] = useState('')
+  const [replyId, setReplyId] = useState()
 
   const [outline, setOutline] = useState('timeline')
   const [timelineOutline, setTimelineOutline] = useState('')
   const [profileOutline, setProfileOutline] = useState('outline')
 
   const updateRef = useRef()
+  const replyRef = useRef()
 
   const fetchPost = async () => {
     setIsLoadingPost(true)
@@ -162,6 +164,22 @@ function App() {
     updateRef.current.close()
   }
 
+  const handleReplyInfo = posts => {
+    setReplyId(posts.ref['@ref'].id)
+    // setUpdateTitleField(posts.data.title)
+    // setUpdateContentField(posts.data.content)
+
+    handleReplyModalOpen()
+  }
+
+  const handleReplyModalOpen = () => {
+    replyRef.current.showModal()
+  }
+
+  const handleReplyModalClose = () => {
+    replyRef.current.close()
+  }
+
   const handleDelete = async posts => {
     try {
       await fetch('.netlify/functions/postDelete', {
@@ -190,7 +208,7 @@ function App() {
           paddingTop: '0',
           paddingBottom: '1rem'
         }}>
-          <button>reply</button>
+          <button onClick={() => handleReplyInfo(posts)}>Reply</button>
         </div>
 
         <hr />
@@ -302,10 +320,10 @@ function App() {
 
       <dialog ref={updateRef}>
         <article>
-          <header>
-            <button aria-label="Close" rel="prev"
+          <header style={{ textAlign: 'right' }}>
+            <button
               onClick={() => handleUpdateModalClose()}
-            ></button>
+            >Close</button>
           </header>
 
           <form onSubmit={e => handleUpdate(e)}>
@@ -320,6 +338,31 @@ function App() {
             />
             <input type="submit" value="Update" />
           </form>
+        </article>
+      </dialog>
+
+      <dialog ref={replyRef}>
+        <article>
+          <header style={{ textAlign: 'right' }}>
+            <button
+              onClick={() => handleReplyModalClose()}
+            >Close</button>
+          </header>
+
+          <p>{replyId}</p>
+
+          {/* <form onSubmit={e => handleUpdate(e)}>
+            <input type="text"
+              value={updateTitleField}
+              onChange={e => setUpdateTitleField(e.target.value)}
+            />
+            <textarea
+              style={{ height: "50vh" }}
+              value={updateContentField}
+              onChange={e => setUpdateContentField(e.target.value)}
+            />
+            <input type="submit" value="Update" />
+          </form> */}
         </article>
       </dialog>
 
