@@ -266,7 +266,7 @@ function App() {
   </>
 
   const profileForm = <>
-    <p>Silakan buat posting di sini; posting Anda akan muncul di Timeline setelah disetujui oleh admin.</p>
+    <p>Silakan buat posting di sini; posting Anda akan muncul di Timeline setelah disetujui oleh admin</p>
 
     <form onSubmit={e => handleCreate(e)}>
       <input type="text"
@@ -354,7 +354,7 @@ function App() {
               (<p style={{
                 fontWeight: 'bold',
                 textAlign: 'center'
-              }}>Please login to see your post</p>)
+              }}>Silakan login untuk melihat posting Anda</p>)
             }
 
             {isLoadingProfile ?
@@ -405,15 +405,21 @@ function App() {
                 overflow: 'auto'
               }}>{timelineReply}</div>
 
-              <form onSubmit={e => handleReply(e)}>
-                <hr />
+              {
+                netlifyIdentity.currentUser() != null ? (
+                  <form onSubmit={e => handleReply(e)}>
+                    <hr />
 
-                <textarea
-                  value={replyContentField}
-                  onChange={e => setReplyContentField(e.target.value)}
-                />
-                <input type="submit" value="Reply" />
-              </form>
+                    <textarea
+                      value={replyContentField}
+                      onChange={e => setReplyContentField(e.target.value)}
+                    />
+                    <input type="submit" value="Reply" />
+                  </form>
+                ) : (
+                  <p style={{ textAlign: 'center' }}>Silahkan login untuk dapat melakukan reply</p>
+                )
+              }
             </>)
           }
 
