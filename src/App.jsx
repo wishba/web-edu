@@ -176,6 +176,8 @@ function App() {
   }
 
   const postForm = <>
+    <p>Silakan buat posting di sini; posting Anda akan muncul di Timeline setelah disetujui oleh admin.</p>
+
     <form onSubmit={e => handleCreate(e)}>
       <input type="text"
         value={createTitleField}
