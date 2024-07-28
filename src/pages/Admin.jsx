@@ -44,7 +44,6 @@ function Admin() {
 
       {userId === import.meta.env.VITE_ADMIN_USER_ID ?
         (<>
-          <p>tes</p>
           <p>{userId}</p>
           <p>{userName}</p>
         </>) :
