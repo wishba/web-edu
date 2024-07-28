@@ -4,6 +4,10 @@ function Admin() {
   const [userId, setUserId] = useState()
   const [userName, setUserName] = useState()
 
+  const [outline, setOutline] = useState('approved')
+  const [approvedOutline, setApprovedOutline] = useState('')
+  const [pendingOutline, setPendingOutline] = useState('outline')
+
   useEffect(() => {
     if (netlifyIdentity.currentUser() != null) {
       setUserId(netlifyIdentity.currentUser().id)
@@ -25,6 +29,21 @@ function Admin() {
     })
   }, [])
 
+  const handleOpenApproved = () => {
+    setOutline('approved')
+    setPendingOutline('')
+    setApprovedOutline('outline')
+
+    // fetchTimeline()
+  }
+
+  const handleOpenPending = () => {
+    setOutline('pending')
+    setPendingOutline('outline')
+    setApprovedOutline('')
+
+    // fetchProfile()
+  }
 
   return (
     <div className='container'>
@@ -42,16 +61,53 @@ function Admin() {
       </nav>
       <br />
 
-      {userId === import.meta.env.VITE_ADMIN_USER_ID ?
-        (<>
-          <p>{userId}</p>
-          <p>{userName}</p>
-        </>) :
-
+      {!userId === import.meta.env.VITE_ADMIN_USER_ID ?
         (<p style={{
           fontWeight: 'bold',
           textAlign: 'center'
-        }}>Harap login sebagai admin</p>)
+        }}>Harap login sebagai admin</p>) :
+
+        (<>
+          <button
+            className={approvedOutline}
+            style={{ width: '50%' }}
+            onClick={handleOpenPending}
+          >Approved</button>
+
+          <button
+            className={pendingOutline}
+            style={{ width: '50%' }}
+            onClick={handleOpenApproved}
+          >Pending</button>
+
+          <br /> <br />
+
+          {outline == 'pending' ?
+            (
+              <>
+                approvedContent
+                {/* {isLoadingTimeline ? */}
+                {/* (<p>Loading...</p>) : */}
+                {/* (<>{timelineContent}</>) */}
+                {/* } */}
+              </>
+
+            ) : null
+          }
+
+          {outline == 'approved' ?
+            (
+              <>
+                pendingContent
+                {/* {isLoadingTimeline ? */}
+                {/* (<p>Loading...</p>) : */}
+                {/* (<>{timelineContent}</>) */}
+                {/* } */}
+              </>
+
+            ) : null
+          }
+        </>)
       }
     </div>
   )
