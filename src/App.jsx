@@ -1,6 +1,8 @@
 import './App.css'
 import netlifyIdentity from 'netlify-identity-widget';
 import { useEffect, useRef, useState } from 'react';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Admin from './pages/Admin';
 
 function App() {
   const [userId, setUserId] = useState()
@@ -98,15 +100,16 @@ function App() {
     fetchTimeline()
 
     if (netlifyIdentity.currentUser() != null) {
-      setUserId(netlifyIdentity.currentUser().id);
+      setUserId(netlifyIdentity.currentUser().id)
       setUserName(netlifyIdentity.currentUser().user_metadata.full_name)
       fetchProfile()
     }
 
     netlifyIdentity.on('login', user => {
-      setUserId(netlifyIdentity.currentUser().id);
+      setUserId(netlifyIdentity.currentUser().id)
       setUserName(user.user_metadata.full_name)
       fetchProfile()
+
       netlifyIdentity.close()
     })
 
@@ -114,6 +117,7 @@ function App() {
       setUserId(null)
       setUserName(null)
       setProfile(null)
+
       netlifyIdentity.close()
     })
   }, [])
@@ -303,130 +307,135 @@ function App() {
     )).slice().reverse()}
   </>
 
-  return (
-    <div className='container'>
-      <br />
-      <nav>
-        <h1 style={{
-          backgroundImage: 'linear-gradient(90deg, #d92662, #2060df)',
-          backgroundClip: 'text',
-          color: 'transparent'
-        }}>Forum Edukasi</h1>
+  const home = <div className='container'>
+    <br />
+    <nav>
+      <h1 style={{
+        backgroundImage: 'linear-gradient(90deg, #d92662, #2060df)',
+        backgroundClip: 'text',
+        color: 'transparent'
+      }}>Forum Edukasi</h1>
 
-        <button onClick={() => netlifyIdentity.open()}>
-          {userName ? 'Logout' : 'Login / Signup'}
-        </button>
-      </nav>
-      <br />
+      <button onClick={() => netlifyIdentity.open()}>
+        {userName ? 'Logout' : 'Login / Signup'}
+      </button>
+    </nav>
+    <br />
 
-      <button
-        className={timelineOutline}
-        style={{ width: '50%' }}
-        onClick={handleOpenTimeline}
-      >Timeline</button>
+    <button
+      className={timelineOutline}
+      style={{ width: '50%' }}
+      onClick={handleOpenTimeline}
+    >Timeline</button>
 
-      <button
-        className={profileOutline}
-        style={{ width: '50%' }}
-        onClick={handleOpenProfile}
-      >Profile</button>
+    <button
+      className={profileOutline}
+      style={{ width: '50%' }}
+      onClick={handleOpenProfile}
+    >Profile</button>
 
-      <br />
-      <br />
+    <br /><br />
 
-      {outline == 'timeline' ?
-        (
-          <>
-            {isLoadingTimeline ?
-              (<p>Loading...</p>) :
-              (<>{timelineContent}</>)
-            }
-          </>
-
-        ) : null
-      }
-
-      {outline == 'profile' ?
-        (
-          <>
-            {netlifyIdentity.currentUser() ?
-              (<>{profileForm}</>) :
-              (<p style={{
-                fontWeight: 'bold',
-                textAlign: 'center'
-              }}>Silakan login untuk melihat posting Anda</p>)
-            }
-
-            {isLoadingProfile ?
-              (<p>Loading...</p>) :
-              (<>{profileContent}</>)
-            }
-          </>
-
-        ) : null
-      }
-
-      <dialog ref={updateRef}>
-        <article>
-          <header style={{ textAlign: 'right' }}>
-            <button
-              onClick={() => handleUpdateModalClose()}
-            >Close</button>
-          </header>
-
-          <form onSubmit={e => handleUpdate(e)}>
-            <input type="text"
-              value={updateTitleField}
-              onChange={e => setUpdateTitleField(e.target.value)}
-            />
-            <textarea
-              style={{ height: "50vh" }}
-              value={updateContentField}
-              onChange={e => setUpdateContentField(e.target.value)}
-            />
-            <input type="submit" value="Update" />
-          </form>
-        </article>
-      </dialog>
-
-      <dialog ref={replyRef}>
-        <article>
-          <header style={{ textAlign: 'right' }}>
-            <button
-              onClick={() => replyRef.current.close()}
-            >Close</button>
-          </header>
-
-          {isLoadingReply ?
+    {outline == 'timeline' ?
+      (
+        <>
+          {isLoadingTimeline ?
             (<p>Loading...</p>) :
-            (<>
-              <div style={{
-                height: '30vw',
-                overflow: 'auto'
-              }}>{timelineReply}</div>
+            (<>{timelineContent}</>)
+          }
+        </>
 
-              {
-                netlifyIdentity.currentUser() != null ? (
-                  <form onSubmit={e => handleReply(e)}>
-                    <hr />
+      ) : null
+    }
 
-                    <textarea
-                      value={replyContentField}
-                      onChange={e => setReplyContentField(e.target.value)}
-                    />
-                    <input type="submit" value="Reply" />
-                  </form>
-                ) : (
-                  <p style={{ textAlign: 'center' }}>Silahkan login untuk dapat melakukan reply</p>
-                )
-              }
-            </>)
+    {outline == 'profile' ?
+      (
+        <>
+          {netlifyIdentity.currentUser() ?
+            (<>{profileForm}</>) :
+            (<p style={{
+              fontWeight: 'bold',
+              textAlign: 'center'
+            }}>Silakan login untuk melihat posting Anda</p>)
           }
 
-        </article>
-      </dialog>
+          {isLoadingProfile ?
+            (<p>Loading...</p>) :
+            (<>{profileContent}</>)
+          }
+        </>
 
-    </div>
+      ) : null
+    }
+
+    <dialog ref={updateRef}>
+      <article>
+        <header style={{ textAlign: 'right' }}>
+          <button
+            onClick={() => handleUpdateModalClose()}
+          >Close</button>
+        </header>
+
+        <form onSubmit={e => handleUpdate(e)}>
+          <input type="text"
+            value={updateTitleField}
+            onChange={e => setUpdateTitleField(e.target.value)}
+          />
+          <textarea
+            style={{ height: "50vh" }}
+            value={updateContentField}
+            onChange={e => setUpdateContentField(e.target.value)}
+          />
+          <input type="submit" value="Update" />
+        </form>
+      </article>
+    </dialog>
+
+    <dialog ref={replyRef}>
+      <article>
+        <header style={{ textAlign: 'right' }}>
+          <button
+            onClick={() => replyRef.current.close()}
+          >Close</button>
+        </header>
+
+        {isLoadingReply ?
+          (<p>Loading...</p>) :
+          (<>
+            <div style={{
+              height: '30vw',
+              overflow: 'auto'
+            }}>{timelineReply}</div>
+
+            {
+              netlifyIdentity.currentUser() != null ? (
+                <form onSubmit={e => handleReply(e)}>
+                  <hr />
+
+                  <textarea
+                    value={replyContentField}
+                    onChange={e => setReplyContentField(e.target.value)}
+                  />
+                  <input type="submit" value="Reply" />
+                </form>
+              ) : (
+                <p style={{ textAlign: 'center' }}>Silahkan login untuk dapat melakukan reply</p>
+              )
+            }
+          </>)
+        }
+
+      </article>
+    </dialog>
+  </div>
+
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route index element={home} />
+        <Route path='admin' element={<Admin />} />
+      </Routes>
+    </BrowserRouter>
   )
 }
 
