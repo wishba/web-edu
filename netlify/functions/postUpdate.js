@@ -7,7 +7,7 @@ const adminClient = new faunadb.Client({
 })
 
 export async function handler(event) {
-  const { postId, title, content } = JSON.parse(event.body)
+  const { postId, title, content, approval } = JSON.parse(event.body)
 
   try {
     const results = await adminClient.query(
@@ -16,7 +16,8 @@ export async function handler(event) {
         {
           data: {
             title,
-            content
+            content,
+            approval
           }
         },
       )

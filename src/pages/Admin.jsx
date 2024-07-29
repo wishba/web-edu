@@ -97,12 +97,57 @@ function Admin() {
     fetchPending()
   }
 
+  const handleApprovePost = async updateId => {
+    try {
+      await fetch('.netlify/functions/postUpdate', {
+        method: 'PUT',
+        body: JSON.stringify({
+          postId: updateId,
+          approval: "true"
+        })
+      })
+
+      fetchApproved()
+      fetchPending()
+
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  const handlePendingPost = async updateId => {
+    try {
+      await fetch('.netlify/functions/postUpdate', {
+        method: 'PUT',
+        body: JSON.stringify({
+          postId: updateId,
+          approval: "false"
+        })
+      })
+
+      fetchApproved()
+      fetchPending()
+
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   const approvedContent = <>
     {approved?.map(posts => (
       <div key={posts.ref['@ref'].id}>
         <p>&#9786; {posts.data.userName}</p>
         <p style={{ fontWeight: 'bold' }}>{posts.data.title}</p>
         <p>{posts.data.content}</p>
+
+        <div style={{
+          textAlign: 'right',
+          paddingTop: '0',
+          paddingBottom: '1rem'
+        }}>
+          <button onClick={() => handlePendingPost(posts.ref['@ref'].id)}>Revert to pending</button>
+        </div>
+
         <hr />
       </div>
     )).slice().reverse()}
@@ -119,6 +164,15 @@ function Admin() {
           <p>&#9786; {posts.data.userName}</p>
           <p style={{ fontWeight: 'bold' }}>{posts.data.title}</p>
           <p>{posts.data.content}</p>
+
+          <div style={{
+            textAlign: 'right',
+            paddingTop: '0',
+            paddingBottom: '1rem'
+          }}>
+            <button onClick={() => handleApprovePost(posts.ref['@ref'].id)}>Approve post</button>
+          </div>
+
           <hr />
         </div>
       );
