@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 
 function Admin() {
+  const [isAdmin, setIsAdmin] = useState(false)
+
   const [userId, setUserId] = useState()
   const [userName, setUserName] = useState()
 
@@ -80,6 +82,15 @@ function Admin() {
       netlifyIdentity.close()
     })
   }, [])
+
+  useEffect(() => {
+    if (userId === import.meta.env.VITE_ADMIN_USER_ID) {
+      setIsAdmin(true)
+    } else (
+      setIsAdmin(false)
+    )
+  }, [userId])
+
 
   const handleOpenApproved = () => {
     setOutline('approved')
@@ -195,7 +206,7 @@ function Admin() {
       </nav>
       <br />
 
-      {!userId === import.meta.env.VITE_ADMIN_USER_ID ?
+      {!isAdmin ?
         (<p style={{
           fontWeight: 'bold',
           textAlign: 'center'
