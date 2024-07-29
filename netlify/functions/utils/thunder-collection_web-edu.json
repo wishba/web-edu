@@ -2,7 +2,7 @@
     "clientName": "Thunder Client",
     "collectionName": "web-edu",
     "collectionId": "752bf35e-0c4c-4882-ac54-25b5dc5942fa",
-    "dateExported": "2024-07-22T23:34:50.661Z",
+    "dateExported": "2024-07-29T01:56:20.626Z",
     "version": "1.2",
     "folders": [],
     "requests": [
@@ -24,18 +24,6 @@
             }
         },
         {
-            "_id": "bfdb426e-f389-4737-9c4b-b117ce8cd1e0",
-            "colId": "752bf35e-0c4c-4882-ac54-25b5dc5942fa",
-            "containerId": "",
-            "name": "read all post",
-            "url": "http://localhost:8888/.netlify/functions/postReadAll",
-            "method": "GET",
-            "sortNum": 35000,
-            "created": "2024-07-22T14:53:13.605Z",
-            "modified": "2024-07-22T14:53:43.997Z",
-            "headers": []
-        },
-        {
             "_id": "38396cb1-e625-43f8-b356-fed17d389f94",
             "colId": "752bf35e-0c4c-4882-ac54-25b5dc5942fa",
             "containerId": "",
@@ -44,7 +32,7 @@
             "method": "POST",
             "sortNum": 40000,
             "created": "2024-07-22T14:37:39.477Z",
-            "modified": "2024-07-22T22:17:40.629Z",
+            "modified": "2024-07-29T01:51:06.625Z",
             "headers": [],
             "body": {
                 "type": "json",
@@ -61,11 +49,45 @@
             "method": "PUT",
             "sortNum": 45000,
             "created": "2024-07-22T14:56:21.500Z",
-            "modified": "2024-07-22T15:01:04.855Z",
+            "modified": "2024-07-29T01:19:16.960Z",
             "headers": [],
             "body": {
                 "type": "json",
-                "raw": "{\n  \"postId\": \"404121813174452810\",\n  \"title\": \"is php still relevant in 2024?\",\n  \"content\": \"Although many consider PHP an old and subpar language, it remains the most used language across all websites in 2024.\"\n}",
+                "raw": "{\n  \"postId\": \"404701471859278401\",\n  \"title\": \"is php still relevant in 2024?\",\n  \"content\": \"Although many consider PHP an old and subpar language, it remains the most used language across all websites in 2024.\",\n  \"approval\": \"true\"\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "4fdccbfd-3383-4023-adb2-694cc8ca13e7",
+            "colId": "752bf35e-0c4c-4882-ac54-25b5dc5942fa",
+            "containerId": "",
+            "name": "read all approved post",
+            "url": "http://localhost:8888/.netlify/functions/postReadApproved",
+            "method": "GET",
+            "sortNum": 45000,
+            "created": "2024-07-23T00:22:54.328Z",
+            "modified": "2024-07-29T01:53:35.644Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"isApproved\": \"true\"\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "e842a93e-2367-4b03-b6cf-c5472d09636c",
+            "colId": "752bf35e-0c4c-4882-ac54-25b5dc5942fa",
+            "containerId": "",
+            "name": "read all reply post",
+            "url": "http://localhost:8888/.netlify/functions/postReadReply",
+            "method": "PUT",
+            "sortNum": 45000,
+            "created": "2024-07-23T13:24:40.315Z",
+            "modified": "2024-07-23T13:30:20.970Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"replyTo\": \"404150398972068426\"\n}",
                 "form": []
             }
         },
@@ -78,14 +100,14 @@
             "method": "DELETE",
             "sortNum": 60000,
             "created": "2024-07-22T15:02:07.003Z",
-            "modified": "2024-07-22T15:02:57.038Z",
+            "modified": "2024-07-29T01:55:55.032Z",
             "headers": [],
             "body": {
                 "type": "json",
-                "raw": "{\n  \"postId\": \"404121813174452810\"\n}",
+                "raw": "{\n  \"postId\": \"404707545863684673\"\n}",
                 "form": []
             }
         }
     ],
-    "ref": "cHGKCUe3GLPJ5Zkj7HIC-uT5KIcPl8VgfEYUWYpxx82KC4eNbYBCcheWJEr0D6K_2hCaWeDuflT1ShfKgSm3Uw"
+    "ref": "cHGKCUe3GLPJ5Zkj7HIC-hFpZ_cOD1KoTrwtJgiChCk2W369KAu0ptX8UIXuPc22k6FiXbeULKcGFt1d50Nq9w"
 }

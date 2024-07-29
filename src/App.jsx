@@ -1,4 +1,3 @@
-import './App.css'
 import netlifyIdentity from 'netlify-identity-widget';
 import { useEffect, useRef, useState } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
