@@ -36,7 +36,10 @@ function App() {
 
     try {
       const response = await fetch('/.netlify/functions/postReadApproved', {
-        method: 'POST'
+        method: 'POST',
+        body: JSON.stringify({
+          isApproved: 'true'
+        })
       })
 
       const data = await response.json()

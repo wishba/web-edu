@@ -6,12 +6,14 @@ const adminClient = new faunadb.Client({
   secret: process.env.FAUNADB_SECRET
 })
 
-export async function handler() {
+export async function handler(event) {
+  const { isApproved } = JSON.parse(event.body)
+
   try {
     const results = await adminClient.query(
       q.Map(
         q.Paginate(
-          q.Match(q.Index('post-by-approval'), "true")
+          q.Match(q.Index('post-by-approval'), isApproved)
         ),
         (postRef) => q.Get(postRef)
       )

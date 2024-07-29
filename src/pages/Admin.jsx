@@ -4,11 +4,63 @@ function Admin() {
   const [userId, setUserId] = useState()
   const [userName, setUserName] = useState()
 
-  const [outline, setOutline] = useState('approved')
+  const [outline, setOutline] = useState('pending')
   const [approvedOutline, setApprovedOutline] = useState('')
   const [pendingOutline, setPendingOutline] = useState('outline')
 
+  const [approved, setApproved] = useState()
+  const [isLoadingApproved, setIsLoadingApproved] = useState(false)
+  const [pending, setPending] = useState()
+  const [isLoadingPending, setIsLoadingPending] = useState(false)
+
+  const fetchApproved = async () => {
+    setIsLoadingApproved(true)
+
+    try {
+      const response = await fetch('/.netlify/functions/postReadApproved', {
+        method: 'POST',
+        body: JSON.stringify({
+          isApproved: 'true'
+        })
+      })
+
+      const data = await response.json()
+      setApproved(data.data)
+
+    } catch (error) {
+      console.error(error);
+
+    } finally {
+      setIsLoadingApproved(false)
+    }
+  }
+
+  const fetchPending = async () => {
+    setIsLoadingPending(true)
+
+    try {
+      const response = await fetch('/.netlify/functions/postReadApproved', {
+        method: 'POST',
+        body: JSON.stringify({
+          isApproved: 'false'
+        })
+      })
+
+      const data = await response.json()
+      setPending(data.data)
+
+    } catch (error) {
+      console.error(error);
+
+    } finally {
+      setIsLoadingPending(false)
+    }
+  }
+
   useEffect(() => {
+    fetchApproved()
+    fetchPending()
+
     if (netlifyIdentity.currentUser() != null) {
       setUserId(netlifyIdentity.currentUser().id)
       setUserName(netlifyIdentity.currentUser().user_metadata.full_name)
@@ -34,7 +86,7 @@ function Admin() {
     setPendingOutline('')
     setApprovedOutline('outline')
 
-    // fetchTimeline()
+    fetchApproved()
   }
 
   const handleOpenPending = () => {
@@ -42,8 +94,36 @@ function Admin() {
     setPendingOutline('outline')
     setApprovedOutline('')
 
-    // fetchProfile()
+    fetchPending()
   }
+
+  const approvedContent = <>
+    {approved?.map(posts => (
+      <div key={posts.ref['@ref'].id}>
+        <p>&#9786; {posts.data.userName}</p>
+        <p style={{ fontWeight: 'bold' }}>{posts.data.title}</p>
+        <p>{posts.data.content}</p>
+        <hr />
+      </div>
+    )).slice().reverse()}
+  </>
+
+  const pendingContent = <>
+    {pending?.map((posts) => {
+      if (!posts.data.title) {
+        return null;
+      }
+
+      return (
+        <div key={posts.ref['@ref'].id}>
+          <p>&#9786; {posts.data.userName}</p>
+          <p style={{ fontWeight: 'bold' }}>{posts.data.title}</p>
+          <p>{posts.data.content}</p>
+          <hr />
+        </div>
+      );
+    }).slice().reverse()}
+  </>
 
   return (
     <div className='container'>
@@ -85,11 +165,10 @@ function Admin() {
           {outline == 'pending' ?
             (
               <>
-                approvedContent
-                {/* {isLoadingTimeline ? */}
-                {/* (<p>Loading...</p>) : */}
-                {/* (<>{timelineContent}</>) */}
-                {/* } */}
+                {isLoadingApproved ?
+                  (<p>Loading...</p>) :
+                  (<>{approvedContent}</>)
+                }
               </>
 
             ) : null
@@ -98,11 +177,10 @@ function Admin() {
           {outline == 'approved' ?
             (
               <>
-                pendingContent
-                {/* {isLoadingTimeline ? */}
-                {/* (<p>Loading...</p>) : */}
-                {/* (<>{timelineContent}</>) */}
-                {/* } */}
+                {isLoadingPending ?
+                  (<p>Loading...</p>) :
+                  (<>{pendingContent}</>)
+                }
               </>
 
             ) : null
